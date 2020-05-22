@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Fabbonaci number is such that each number is 
+the sum of the two preceding ones
+example:
+    1,1,2,3,5,8,13,21,...
+Wring a code to calculate nth term in the 
+fabbonaci number with the use of memorization 
+and recursion
+"""
+import time
+#With no memorization method
+trial_number=5000
+def fabbonaci(n):
+    if n<0:
+        print("not defined less than 0")
+        return 
+    if n==0:return 0
+    if n ==1:return 1
+    return fabbonaci(n-1)+fabbonaci(n-2)
+start_time=time.time()
+# print("output in the range 1-30\n")
+# for i in range(trial_number):
+#     print(i,"\t",fabbonaci(i))
+# print("time-taken\t",time.time()-start_time)   
+# first_time=time.time()-start_time 
+#With memorization method
+mem={}
+def fabbonaciwithmemo(n):
+    if n<0:
+        print("error:input less than 0")
+        return
+    if n in mem:
+        return mem[n]
+    if n==0:return 0
+    if n==1:return 1
+    value=fabbonaciwithmemo(n-1)+fabbonaciwithmemo(n-2)
+    mem[n]=value
+    return value
+print("customed memorization output in the range 1-30\n")
+start_time2=time.time()
+for i in range(trial_number):
+    print(i,"\t",fabbonaciwithmemo(i))
+print("memorization time-taken\t",time.time()-start_time2)
+second_time=time.time()-start_time2
+#print("time-difference\t",second_time-first_time)
+#Using the predefined library
+from functools import lru_cache
+@lru_cache(maxsize=1000)
+
+def fabbonaciwithdefmemo(n):
+    if n<0:
+        print("error:input less than 0")
+        return
+    if n==0:return 0
+    if n==1:return 1
+    return fabbonaciwithmemo(n-1)+fabbonaciwithmemo(n-2)
+    
+print("memorization library output in the range 1-30\n")
+start_time3=time.time()
+for i in range(trial_number):
+    print(i,"\t",fabbonaciwithdefmemo(i))
+print("memorization time-taken\t",time.time()-start_time3)
+third_time=time.time()-start_time3
+print("time-difference\t",third_time-second_time)
