@@ -23,6 +23,7 @@ print("row\t",row)
 print("col\t",col)
 
 #counting the possible routtes
+#we have to start from 2nd row and second column
 for i in range(1,row):
     for j in range(1,col):
         matrix[i][j]=matrix[i-1][j]+matrix[i][j-1]
