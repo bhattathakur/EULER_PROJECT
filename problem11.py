@@ -55,38 +55,115 @@ print("list number\t",len(grid_string_list))
 #Putting the given list of string into two dimensional array
 nrow,ncolumn=20,20
 import numpy as np
+import pandas as pd
 twodilist=np.array(grid_string_list).reshape(nrow,ncolumn)
-print(twodilist)
+print("two-dimensional array\n",twodilist)
 
-#returns maximum value of product of given number of adjacent numbers in a list
-def givemax(a,adjacents):
-    maximum=0
-    for i in range(len(a)-adjacents):
-        product=1
-        for j in range(i,adjacents+i):
-            product*=j
-        if product>maximum:maximum=product
-    return maximum
-#using given function in the first column of given array
-columnmax=0
-for i in range(ncolumn):
-    print(twodilist[:,i])
-    listt=twodilist[:,i]
-    maxi=givemax(listt,4)
-    print("maxi\t",maxi)
-    print(givemax(twodilist[:,i],4))
+#checking the first diagonal
+def checkdiagonal1(i,j):
+    if (((i-3)>=0) and ((j-3)>=0)):
+        return True
 
-#using given function in the rows of given array
-rowmax=0
-for i in range(ncolumn):
-    print(twodilist[i,:])
-    listt=twodilist[i,:]
-    maxi=givemax(listt,4)
-    print("maxi\t",maxi)
-    print(givemax(twodilist[i,:],4))
+#checking the second diagonal
+def checkdiagonal2(i,j):
+    if (((i-3)>=0) and ((j+3)<20)):
+        return True
 
+#checking the third diagonal
+def checkdiagonal3(i,j):
+    if (((i+3)<20) and ((j-3)>=0)):
+        return True
 
-
-
-
+#checking the fourth diagonal
+def checkdiagonal4(i,j):
+    if (((i+3)<20) and ((j+3)<20)):
+        return True
     
+#checking the left 
+def checkleft(i,j):
+    if (((i)>=0) and ((j-3)>=0)):
+        return True
+
+#checking the right 
+def checkright(i,j):
+    if (((i)>=0) and ((j+3)<20)):
+        return True
+
+#checking the up 
+def checkup(i,j):
+    if (((i-3)>=0) and ((j)>=0)):
+        return True
+
+#checking the down 
+def checkdown(i,j):
+    if (((i+3)<20) and ((j)>=0)):
+        return True
+#To test whether each testing functions are working properly
+logiclist=[]
+for i in range(20):
+    for j in range(20):
+        logiclist.append(checkdown(i,j))
+########################################
+#getting the sum of each valid element with other 4 adjacennt members(up,down,right,left,diagonal(4))
+
+def getSumall(i,j):
+    max_sum=1
+    #1st diagonal sum
+    if(checkdiagonal1(i,j)):
+        sum1=twodilist[i-3][j-3]*twodilist[i-2][j-2]*twodilist[i-1][j-1]*twodilist[i][j]
+        print("sum1\t",sum1)
+        if(sum1>max_sum):max_sum=sum1
+
+    #2nd diagonal sum
+    if(checkdiagonal2(i,j)):
+        sum2=twodilist[i-3][j+3]*twodilist[i-2][j+2]*twodilist[i-1][j+1]*twodilist[i][j]
+        print("sum2\t",sum2)
+        if(sum2>max_sum):max_sum=sum2
+
+    #3nd diagonal sum
+    if(checkdiagonal3(i,j)):
+        sum3=twodilist[i+3][j-3]*twodilist[i+2][j-2]*twodilist[i+1][j-1]*twodilist[i][j]
+        print("sum3\t",sum3)
+        if(sum3>max_sum):max_sum=sum3
+
+    #4th diagonal sum
+    if(checkdiagonal4(i,j)):
+        sum4=twodilist[i+3][j+3]*twodilist[i+2][j+2]*twodilist[i+1][j+1]*twodilist[i][j]
+        print("sum4\t",sum4)
+        if(sum4>max_sum):max_sum=sum4
+
+    #left sum
+    if(checkleft(i,j)):
+        sum5=twodilist[i][j-3]*twodilist[i][j-2]*twodilist[i][j-1]*twodilist[i][j]
+        print("sum5\t",sum5)
+        if(sum5>max_sum):max_sum=sum5
+
+    #right sum
+    if(checkright(i,j)):
+        sum6=twodilist[i][j+3]*twodilist[i][j+2]*twodilist[i][j+1]*twodilist[i][j]
+        print("sum6\t",sum6)
+        if(sum6>max_sum):max_sum=sum6
+
+    #up sum
+    if(checkup(i,j)):
+        sum7=twodilist[i-3][j]*twodilist[i-2][j]*twodilist[i-1][j]*twodilist[i][j]
+        print("sum7\t",sum7)
+        if(sum7>max_sum):max_sum=sum7
+
+    #down sum
+    if(checkdown(i,j)):
+        sum8=twodilist[i+3][j]*twodilist[i+2][j]*twodilist[i+1][j]*twodilist[i][j]
+        print("sum8\t",sum8)
+        if(sum8>max_sum):max_sum=sum8
+    return max_sum
+
+#list stores the sum achieved for each member
+sum_list=[]        
+for i in range(20):
+    for j in range(20):
+        sum_list.append(getSumall(i,j))
+        #getSumall(i,j)
+print(sum_list)
+
+#gives maximum value in the list
+print("max\t",max(sum_list))
