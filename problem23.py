@@ -8,23 +8,46 @@ As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest numb
 Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 """
 #returns sum of proper divisors of a given number
-
+import math
 def sumproperdivisor(n):
-    sum=0
-    for i in range(1,n//2+1):
+    sum=1 # 1 is already included here
+    t=math.ceil(math.sqrt(n))
+    for i in range(2,t):
         if n%i==0:
-            sum+=i
+            sum+=i+n//i #note i+n//i both divisor and remainder both factors included
     return sum
-abundant_list=[i for i in range(2,22000) if sumproperdivisor(i)>i]
+abundant_list={i for i in range(1,28123) if sumproperdivisor(i)>i}
+#print("abundant_list\n",abundant_list)
+#print("total lengths",len(abundant_list))
+abundant_sum={(i+j) for i in abundant_list for j in abundant_list if (i+j)<28123}
+#print('abundant_sum_list\n',abundant_sum)
+rest={i for i in range(1,28123) if i not in abundant_sum}
+#print("rest\n",rest)
+print("Total sum\n")
+print(sum(rest))
 
-sumofabundant=[]
-limit=len(abundant_list)
-for i in range(limit):
-    print("run\t",i,"\n")
-    for j in range(i,limit):
-        check=abundant_list[i]+abundant_list[j]
-        if check>28123:break
-        if check not in sumofabundant:
-            sumofabundant.append(check)
-print('sum of abundant\t',sumofabundant)
+#abundat_sum=[] #list of numbers which is the sum of two abundant numbers
+#for i in abundant_list:
+#    #print("i\t",i)
+#    for j in abundant_list:
+#        sum=i+j
+#        #print("sum\t",sum)
+#        if sum in abundant_list:
+#            abundat_sum.append(sum)
+#            abundant_list.remove(sum)
+#    abundant_list.pop(0)
+#print("pair-sum\n",abundat_sum)
+#print("lengh pair-sum\t",len(abundat_sum))
+#all_integers=[i for i in range(1,28124)]
+#print("all-integer",all_integers)
+#rest_integers=[i for i in all_integers if i not in abundat_sum]
+#print("rest-integers",rest_integers)
+##sum_all=sum(rest_integers)
+#print("============================================================================")
+#print("sum of all elements\n")
+#sum=0
+#for i in rest_integers:
+#    sum+=i
+#print("sum\t",sum)
+#print("sum\t",sum(sum_all))
 
